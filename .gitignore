@@ -1,0 +1,49 @@
+# ==========================================
+# Exclusiones específicas del proyecto
+# ==========================================
+# Excluir carpetas de grabaciones y medios locales
+/cam/
+/cam/*
+/data/
+*.mp4
+*.mkv
+
+# Configuración con datos sensibles (si aplica)
+config/config.json
+
+# ==========================================
+# Python
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Entornos virtuales
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Logs y bases de datos locales
+*.log
+*.sqlite3
+
+# ==========================================
+# Frontend y Entorno Web / IDEs
+# ==========================================
+# Editor / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Paquetes y dependencias frontend (si usas npm a futuro)
+node_modules/
+dist/

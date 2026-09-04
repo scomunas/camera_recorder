@@ -1,0 +1,8 @@
+# Python dependencies
+fastapi
+uvicorn
+
+# System dependencies (must be installed separately):
+# - ffmpeg: Required for on-the-fly video remuxing (MKV -> MP4 with AAC audio)
+#   Install: https://ffmpeg.org/download.html
+#   Verify: ffmpeg -version

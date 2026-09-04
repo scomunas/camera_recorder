@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+            <h1>Security Dashboard</h1>
+        </div>
+        <nav class="tabs">
+            <button class="tab active" data-tab="realtime">Realtime</button>
+            <button class="tab" data-tab="historical">Historical</button>
+        </nav>
+    </header>
+
+    <main class="app-content">
+        <!-- Realtime Section -->
+        <section id="realtime" class="section active">
+            <div class="camera-grid" id="cameraGrid">
+                <!-- Camera cards will be injected here by app.js -->
+            </div>
+        </section>
+
+        <!-- Historical Section -->
+        <section id="historical" class="section">
+            <div class="historical-container">
+                <div class="historical-header">
+                    <div class="camera-selector">
+                        <label for="historyCameraSelect">Select Camera:</label>
+                        <select id="historyCameraSelect">
+                            <option value="">-- Choose Camera --</option>
+                            <!-- Options injected by JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="historical-player-card">
+                    <div class="video-wrapper">
+                        <video id="historicalVideo" controls crossorigin playsinline>
+                            Your browser does not support HTML5 video.
+                        </video>
+                        <div id="videoOverlay" class="video-overlay">Select a camera to load history</div>
+                    </div>
+                    
+                    <div class="history-controls" id="historyControls" style="display: none;">
+                        <div class="date-picker-row">
+                            <label for="historyDatePicker">Date:</label>
+                            <input type="date" id="historyDatePicker">
+                        </div>
+                        <div class="timeline-bar-container">
+                            <div class="timeline-hours">
+                                <span>00</span><span>03</span><span>06</span><span>09</span><span>12</span><span>15</span><span>18</span><span>21</span><span>24</span>
+                            </div>
+                            <div class="timeline-bar" id="timelineBar">
+                                <div class="timeline-track" id="timelineTrack"></div>
+                                <div class="timeline-cursor" id="timelineCursor"></div>
+                            </div>
+                            <div class="timeline-time-display" id="timelineTimeDisplay">--:--:--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
