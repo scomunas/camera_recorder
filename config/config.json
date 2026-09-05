@@ -2,7 +2,7 @@
   "server": {
     "ip": "192.168.68.236",
     "http_port": 1984,
-    "secure_url": "https://go2rtc.comunas.es"
+    "secure_url": "go2rtc.comunas.es"
   },
   "videos_folder": "../cam",
   "cameras": [
