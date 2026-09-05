@@ -5,6 +5,7 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
 
 app = FastAPI()
 
@@ -16,14 +17,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Obtiene la carpeta raíz del proyecto (un nivel arriba del directorio actual 'back')
+BASE_DIR = Path(__file__).resolve().parent.parent
+CONFIG_PATH = BASE_DIR / "config" / "config.json"
+
 def load_config():
-    config_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'config.json')
     try:
-        with open(config_path, 'r', encoding='utf-8') as f:
+        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
-    except Exception as e:
-        print(f"Error loading config.json: {e}")
-        return None
+    except FileNotFoundError:
+        print(f"Error loading config.json: File not found at {CONFIG_PATH}")
+        raise
 
 @app.get("/api/config")
 def get_config():
