@@ -81,8 +81,14 @@ function initializeCameras(config) {
     const { server, cameras } = config;
     
     cameras.forEach(camera => {
-        const streamUrl = `http://${server.ip}:${server.http_port}/stream.html?src=${camera.id}`;
-        
+        streamUrl = ""
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            streamUrl = `http://${server.ip}:${server.http_port}/stream.html?src=${camera.id}`;
+        }
+        else {
+            streamUrl = `https://${server.secure_url}/stream.html?src=${camera.id}`;
+        }
+
         const card = document.createElement('div');
         card.className = 'camera-card';
         
