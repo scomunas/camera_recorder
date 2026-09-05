@@ -65,7 +65,13 @@ async function loadConfiguration() {
 }
 
 function getBaseUrl() {
-    return window.location.protocol + '//' + window.location.hostname + ':5000';
+    // Si estás en local (ej. Live Server en el puerto 5500 o abriendo el HTML directo)
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:5000'; // Apunta directo al Uvicorn de tu PC
+    }
+    
+    // Si estás en producción (servidor LXC / Nginx)
+    return window.location.origin; // Usa la misma IP y puerto del servidor
 }
 
 function initializeCameras(config) {
