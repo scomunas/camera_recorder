@@ -1,0 +1,13 @@
+{
+  "server": {
+    "ip": "192.168.68.236",
+    "http_port": 1984
+  },
+  "videos_folder": "../cam",
+  "cameras": [
+    { "id": "balcon", "name": "Balcón" },
+    { "id": "comedor", "name": "Comedor" },
+    { "id": "estudio", "name": "Estudio" },
+    { "id": "terraza", "name": "Terraza" }
+  ]
+}

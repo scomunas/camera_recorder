@@ -8,8 +8,6 @@
 *.mp4
 *.mkv
 
-# Configuración con datos sensibles (si aplica)
-config/config.json
 
 # ==========================================
 # Python
