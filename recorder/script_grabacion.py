@@ -145,7 +145,8 @@ def main():
             if proc is not None:
                 retcode = proc.poll()
                 elapsed = time.time() - start_times.get(name, time.time())
-                
+
+                now = datetime.datetime.now()
                 if retcode is not None:
                     duration = int(time.time() - start_times.get(name, time.time()))
                     last_errors = list(LOG_BUFFERS.get(name, []))
@@ -160,9 +161,10 @@ def main():
                     log(f"Lanzando grabación para {name}...")
                     processes[name] = start_recording(name, url)
                     start_times[name] = time.time()
-            # 2. Si el proceso sigue vivo pero supera las 4 horas (14400s), rotación preventiva
-                elif elapsed > 14400:
-                    log(f"[INFO] Rotación preventiva de memoria para {name} (Lleva {int(elapsed)}s activo)...")
+                # 2. Rotación preventiva: solo en el minuto :00 (entre el segundo 00 y el 10)
+                # y si el proceso lleva al menos 3h 50m activo (13800s)
+                elif elapsed >= 13800 and now.minute == 0 and now.second <= 10:
+                    log(f"[INFO] Rotación limpia alineada a la hora para {name}...")
                     
                     proc.terminate()
                     try:
