@@ -58,9 +58,18 @@ def start_recording(cam_name, stream_url):
         "ffmpeg",
         "-hide_banner",
         "-loglevel", "error",
-        "-fflags", "+nobuffer+genpts",
+        # --- LÍMITES STRICTOS DE MEMORIA Y BÚFER ---
+        "-probesize", "32K",            # Solo analiza 32KB para iniciar (evita bufer en RAM)
+        "-analyzeduration", "0",        # Tiempo de análisis 0
+        "-fflags", "+nobuffer+discardcorrupt", # Si hay frames corruptos los tira, no los guarda
+        "-reconnect", "1",
+        "-reconnect_at_eof", "1",
+        "-reconnect_streamed", "1",
+        "-reconnect_delay_max", "2",
+        # ---------------------------------------------
         "-i", stream_url,
         "-c", "copy",
+        "-max_delay", "500000",         # Búfer máximo de red de 0.5s
         "-f", "segment",
         "-segment_time", "900",
         "-segment_atclocktime", "1",
@@ -131,9 +140,11 @@ def main():
 
         for name, url in CAMERAS.items():
             proc = processes.get(name)
-            
+
+            # 1. Si el proceso ha muerto por error/corte
             if proc is not None:
                 retcode = proc.poll()
+                elapsed = time.time() - start_times.get(name, time.time())
                 
                 if retcode is not None:
                     duration = int(time.time() - start_times.get(name, time.time()))
@@ -146,6 +157,22 @@ def main():
                     LOG_BUFFERS[name].clear()
                     time.sleep(5)
                     
+                    log(f"Lanzando grabación para {name}...")
+                    processes[name] = start_recording(name, url)
+                    start_times[name] = time.time()
+            # 2. Si el proceso sigue vivo pero supera las 4 horas (14400s), rotación preventiva
+                elif elapsed > 14400:
+                    log(f"[INFO] Rotación preventiva de memoria para {name} (Lleva {int(elapsed)}s activo)...")
+                    
+                    proc.terminate()
+                    try:
+                        proc.wait(timeout=3)
+                    except subprocess.TimeoutExpired:
+                        proc.kill()
+
+                    LOG_BUFFERS[name].clear()
+                    time.sleep(1)
+
                     log(f"Lanzando grabación para {name}...")
                     processes[name] = start_recording(name, url)
                     start_times[name] = time.time()
